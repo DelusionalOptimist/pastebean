@@ -1,0 +1,4 @@
+FROM scratch
+WORKDIR /
+ADD ./create /create
+ENTRYPOINT [ "/create" ]

@@ -1,0 +1,48 @@
+version: "3.7"
+services:
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: pastebeandb
+    networks:
+      - pastebean-net
+
+  envoy_proxy:
+    image: envoyproxy/envoy:v1.20-latest
+    volumes:
+    - ./envoy-config.yaml:/etc/envoy.yaml
+    networks:
+    - pastebean-net
+    command: ["envoy", "-c", "/etc/envoy.yaml"]
+    ports:
+    - "8000:8000"
+    - "8001:8001"
+
+  create_service:
+    build:
+      context: ./create
+      dockerfile: dev-dockerfile
+    environment:
+      POSTGRES_PASSWORD: password
+    networks:
+      - pastebean-net
+    depends_on:
+      - "postgres"
+
+  read_service:
+    build:
+      context: ./read
+      dockerfile: dev-dockerfile
+    networks:
+      - pastebean-net
+    environment:
+      POSTGRES_PASSWORD: password
+    depends_on:
+      - "postgres"
+
+networks:
+  pastebean-net: {}
