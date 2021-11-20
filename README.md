@@ -25,7 +25,7 @@ curl localhost:8000/<16-digit-uuid>
 * Read: A service that reads created paste.
 
 #### Architecture
-[pastebean architecture](docs/images/pastebean-1.png)
+![pastebean architecture](docs/images/pastebean-1.png)
 
 ### Development
 * Requirements:
