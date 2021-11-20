@@ -1,5 +1,5 @@
 # pastebean
-Implementing a pastebin clone as a microservice architecture.
+Implementing a pastebin clone as a microservice architecture.<br>
 Written using [go-gin](https://github.com/gin-gonic/gin) and [gorm](https://github.com/go-gorm/gorm) alongwith many other awesome open source Go libaries.
 Served using [envoy proxy](https://envoyproxy.io/).
 Containerized and orchestrated using [docker and docker-compose](https://www.docker.com/).
