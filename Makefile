@@ -20,9 +20,9 @@ pastebean-dirty: dev-db build-all run-create run-read
 # --------------------------------------------------------------------------------------------------------------------------------------------
 
 # Uses docker compose to setup containerized dev environments
-# make pastebean
+# make pastebean-dc-dev
 
-pastebean-dev: build-all
+pastebean-dc-dev: build-all
 	docker-compose -f ./dev-docker-compose.yaml up --build
 
 # --------------------------------------------------------------------------------------------------------------------------------------------
