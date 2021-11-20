@@ -45,8 +45,10 @@ curl localhost:8000/<16-digit-uuid>
 	```
 
 ### TODO
-- [] Blog/tutorial series
-- [] More services using different protocols
-- [] Dyanmic Envoy configuration and service discovery
-- [] More container orchestrators
-- [] Service mesh
+- [ ] Blog/tutorial series
+- [ ] Polygot services using different protocols
+- [ ] Users and authorization and authentication
+- [ ] Dyanmic Envoy configuration and service discovery
+- [ ] More container orchestrators
+- [ ] Service mesh
+
