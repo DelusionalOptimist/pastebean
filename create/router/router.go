@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/DelusionalOptimist/pastebean/handlers"
+	"github.com/DelusionalOptimist/pastebean/create/handlers"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

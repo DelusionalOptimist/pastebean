@@ -2,15 +2,18 @@ package main
 
 import (
 	"fmt"
+	"time"
 
-	"github.com/DelusionalOptimist/pastebean/models"
-	"github.com/DelusionalOptimist/pastebean/router"
+	"github.com/DelusionalOptimist/pastebean/create/router"
+	"github.com/DelusionalOptimist/pastebean/pkg/common/models"
 	_ "github.com/lib/pq"
+	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func main() {
+	time.Sleep(time.Second * 30)
 	db, err := initDBConnection()
 	if err != nil {
 		panic(err)
@@ -21,12 +24,12 @@ func main() {
 }
 
 func initDBConnection() (*gorm.DB, error) {
-	dbConfig, err := models.LoadDBConfig(".env")
-	if err != nil {
-		return nil, err
-	}
+	viper.SetDefault("DB_DRIVER", "postgres")
+	viper.SetDefault("DB_SOURCE", "postgres://postgres:password@postgres:5432/pastebeandb?sslmode=disable")
 
-	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable TimeZone=%s", dbConfig.Host, dbConfig.Port, dbConfig.User, dbConfig.Password, dbConfig.DBName, "Asia/Kolkata")
+	viper.AutomaticEnv()
+
+	connStr := fmt.Sprintf("%s", viper.GetString("DB_SOURCE"))
 
 	db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
   if err != nil {

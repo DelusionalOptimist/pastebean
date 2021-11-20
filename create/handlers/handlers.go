@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/DelusionalOptimist/pastebean/models"
+	"github.com/DelusionalOptimist/pastebean/pkg/common/models"
 	"gorm.io/gorm"
 )
 
