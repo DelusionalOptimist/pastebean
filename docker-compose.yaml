@@ -11,6 +11,17 @@ services:
     networks:
       - pastebean-net
 
+  flyway:
+    image: flyway/flyway:latest
+    volumes:
+      - ./db/migrations:/flyway/sql
+      - ./db/flyway-conf:/flyway/conf
+    networks:
+      - pastebean-net
+    command: ["migrate"]
+    depends_on:
+      - "postgres"
+
   envoy_proxy:
     image: envoyproxy/envoy:v1.20-latest
     volumes:

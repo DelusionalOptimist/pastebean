@@ -14,7 +14,7 @@ func NewHandler(db *gorm.DB) Handler {
 		DB: db,
 	}
 
-	return Handler {
+	return Handler{
 		HandlerEnv: &hEnv,
 	}
 }
