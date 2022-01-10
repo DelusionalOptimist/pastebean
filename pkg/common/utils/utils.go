@@ -23,12 +23,14 @@ func InitDBConnection() (*gorm.DB, error) {
 
 	// try waiting for db to get alive
 	var retryCount = 1
-	if strings.Contains(err.Error(), "connection refused") && retryCount < 5 {
-		log.Printf("Failed connecting to database. Retrying in %d seconds.", 2*retryCount)
-		time.Sleep(time.Second * time.Duration(2*retryCount))
-		retryCount++
-	} else if err != nil {
-		return nil, err
+	if err != nil {
+		if strings.Contains(err.Error(), "connection refused") && retryCount < 5 {
+			log.Printf("Failed connecting to database. Retrying in %d seconds.", 2*retryCount)
+			time.Sleep(time.Second * time.Duration(2*retryCount))
+			retryCount++
+		} else {
+			return nil, err
+		}
 	}
 
 	return db, nil

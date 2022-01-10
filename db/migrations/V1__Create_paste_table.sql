@@ -5,5 +5,6 @@ CREATE TABLE Pastes (
 	updated_at TIMESTAMP DEFAULT NULL,
 	deleted_at TIMESTAMP DEFAULT NULL,
 	body VARCHAR,
-	name VARCHAR(20)
+	name VARCHAR(20),
+	PRIMARY KEY (id)
 );
