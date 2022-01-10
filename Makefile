@@ -38,10 +38,10 @@ pastebean-dc-dev: build-all
 # prodding the bean
 # the only difference is that the binary is built inside the container
 docker-build-prod:
-	DOCKER_BUILDKIT=1 docker build --no-cache --file create/Dockerfile -t pastebean-create:latest . ;
-	DOCKER_BUILDKIT=1 docker build --no-cache --file read/Dockerfile -t pastebean-read:latest . ;
-	DOCKER_BUILDKIT=1 docker build --no-cache --file update/Dockerfile -t pastebean-update:latest . ;
-	DOCKER_BUILDKIT=1 docker build --no-cache --file update/Dockerfile -t pastebean-delete:latest . ;
+	DOCKER_BUILDKIT=1 docker build --no-cache --file create/Dockerfile -t delusionaloptimist/pastebean-create:latest . ;
+	DOCKER_BUILDKIT=1 docker build --no-cache --file read/Dockerfile -t delusionaloptimist/pastebean-read:latest . ;
+	DOCKER_BUILDKIT=1 docker build --no-cache --file update/Dockerfile -t delusionaloptimist/pastebean-update:latest . ;
+	DOCKER_BUILDKIT=1 docker build --no-cache --file delete/Dockerfile -t delusionaloptimist/pastebean-delete:latest . ;
 
 pastebean:
 	docker-compose -f ./docker-compose.yaml up

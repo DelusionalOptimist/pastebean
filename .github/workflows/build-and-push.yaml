@@ -1,0 +1,46 @@
+on:
+  push:
+    paths:
+      - 'create/**'
+      - 'read/**'
+      - 'update/**'
+      - 'delete/**'
+      - 'pkg/**'
+  create:
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    checkout:
+      - name: Checkout code
+        uses: actions/checkout@v2
+    login:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1.12.0
+        with:
+          username: {{ secrets.DOCKERHUB_USERNAME }}
+          password: {{ secrets.DOCKERHUB_PASSWORD }}
+    build:
+      - name: Build docker images
+        run: |
+          make docker-build-prod
+    tag-if-tagged:
+      - name: Build tagged docker images
+        if: ${{ github.events.inputs.name == "create" }}
+        run: |
+          DOCKER_BUILDKIT=1 docker build --no-cache --file create/Dockerfile -t delusionaloptimist/pastebean-create:${GITHUB_REF/refs\/tags\//} . ;
+          DOCKER_BUILDKIT=1 docker build --no-cache --file read/Dockerfile -t delusionaloptimist/pastebean-read:${GITHUB_REF/refs\/tags\//} . ;
+          DOCKER_BUILDKIT=1 docker build --no-cache --file update/Dockerfile -t delusionaloptimist/pastebean-update:${GITHUB_REF/refs\/tags\//} . ;
+          DOCKER_BUILDKIT=1 docker build --no-cache --file delete/Dockerfile -t delusionaloptimist/pastebean-delete:${GITHUB_REF/refs\/tags\//} . ;
+    push:
+      - name: Push to Docker Hub
+        run: |
+          docker push delusionaloptimist/pastebean-create:latest
+          docker push delusionaloptimist/pastebean-read:latest
+          docker push delusionaloptimist/pastebean-update:latest
+          docker push delusionaloptimist/pastebean-delete:latest
+    push-if-tagged:
+      - name: Push tagged images to Docker Hub
+        if: ${{ github.events.inputs.name == "create" }}
+        run: |
+          docker push delusionaloptimist/pastebean-create:${GITHUB_REF/refs\/tags\//} delusionaloptimist/pastebean-read:${GITHUB_REF/refs\/tags\//} delusionaloptimist/pastebean-update:${GITHUB_REF/refs\/tags\//} pastebean-delete:${GITHUB_REF/refs\/tags\//}

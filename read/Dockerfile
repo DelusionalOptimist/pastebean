@@ -5,4 +5,5 @@ RUN cd read; CGO_ENABLED=0 GOOS=linux go build -o /read main.go
 
 FROM scratch
 COPY --from=build /read /
+ENV GIN_MODE=release
 CMD [ "/read" ]

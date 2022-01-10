@@ -7,4 +7,5 @@ FROM busybox
 
 FROM scratch
 COPY --from=build /create /
+ENV GIN_MODE=release
 CMD [ "/create" ]
