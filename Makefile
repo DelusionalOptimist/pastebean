@@ -8,6 +8,8 @@ dev-db:
 build-all:
 	cd create; CGO_ENABLED=0 GOOS=linux go build -o create main.go; cd ..;
 	cd read; CGO_ENABLED=0 GOOS=linux go build -o read main.go; cd ..;
+	cd update; CGO_ENABLED=0 GOOS=linux go build -o update main.go; cd ..;
+	cd delete; CGO_ENABLED=0 GOOS=linux go build -o delete main.go; cd ..;
 
 run-create:
 	DB_DRIVER=$(DB_DRIVER) DB_SOURCE=$(DEV_DB_SOURCE) ./create/create
@@ -15,7 +17,13 @@ run-create:
 run-read:
 	DB_DRIVER=$(DB_DRIVER) DB_SOURCE=$(DEV_DB_SOURCE) ./read/read
 
-pastebean-dirty: dev-db build-all run-create run-read
+run-update:
+	DB_DRIVER=$(DB_DRIVER) DB_SOURCE=$(DEV_DB_SOURCE) ./update/update
+
+run-delete:
+	DB_DRIVER=$(DB_DRIVER) DB_SOURCE=$(DEV_DB_SOURCE) ./delete/delete
+
+pastebean-dirty: dev-db build-all run-create run-read run-update run-delete
 
 # --------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -32,6 +40,8 @@ pastebean-dc-dev: build-all
 docker-build-prod:
 	DOCKER_BUILDKIT=1 docker build --no-cache --file create/Dockerfile -t pastebean-create:latest . ;
 	DOCKER_BUILDKIT=1 docker build --no-cache --file read/Dockerfile -t pastebean-read:latest . ;
+	DOCKER_BUILDKIT=1 docker build --no-cache --file update/Dockerfile -t pastebean-update:latest . ;
+	DOCKER_BUILDKIT=1 docker build --no-cache --file update/Dockerfile -t pastebean-delete:latest . ;
 
 pastebean:
 	docker-compose -f ./docker-compose.yaml up

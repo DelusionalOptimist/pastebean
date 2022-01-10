@@ -34,6 +34,18 @@ static_resources:
                       google_re2: {}
                   route:
                     cluster: pastebean_read_service
+                - match:
+                    safe_regex:
+                      regex: '/update/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
+                      google_re2: {}
+                  route:
+                    cluster: pastebean_update_service
+                - match:
+                    safe_regex:
+                      regex: '/delete/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
+                      google_re2: {}
+                  route:
+                    cluster: pastebean_delete_service
 
   clusters:
   - name: pastebean_create_service
@@ -60,6 +72,30 @@ static_resources:
               socket_address:
                 address: read_service
                 port_value: 8081
+  - name: pastebean_update_service
+    type: STRICT_DNS
+    lb_policy: round_robin
+    load_assignment:
+      cluster_name: pastebean_update_service
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: update_service
+                port_value: 8082
+  - name: pastebean_delete_service
+    type: STRICT_DNS
+    lb_policy: round_robin
+    load_assignment:
+      cluster_name: pastebean_delete_service
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: delete_service
+                port_value: 8083
 
 admin:
   address:

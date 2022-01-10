@@ -39,6 +39,7 @@ services:
       dockerfile: dev-dockerfile
     environment:
       POSTGRES_PASSWORD: password
+      PORT: 8080
     networks:
       - pastebean-net
     depends_on:
@@ -52,6 +53,31 @@ services:
       - pastebean-net
     environment:
       POSTGRES_PASSWORD: password
+      PORT: 8081
+    depends_on:
+      - "flyway"
+
+  update_service:
+    build:
+      context: ./update
+      dockerfile: dev-dockerfile
+    networks:
+      - pastebean-net
+    environment:
+      POSTGRES_PASSWORD: password
+      PORT: 8082
+    depends_on:
+      - "flyway"
+
+  delete_service:
+    build:
+      context: ./delete
+      dockerfile: dev-dockerfile
+    networks:
+      - pastebean-net
+    environment:
+      POSTGRES_PASSWORD: password
+      PORT: 8083
     depends_on:
       - "flyway"
 

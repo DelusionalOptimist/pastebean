@@ -39,6 +39,7 @@ services:
       - pastebean-net
     environment:
       POSTGRES_PASSWORD: password
+      PORT: 8080
     depends_on:
       - "postgres"
 
@@ -48,6 +49,27 @@ services:
       - pastebean-net
     environment:
       POSTGRES_PASSWORD: password
+      PORT: 8081
+    depends_on:
+      - "postgres"
+
+  update_service:
+    image: delusionaloptimist/pastebean-update:latest
+    networks:
+      - pastebean-net
+    environment:
+      POSTGRES_PASSWORD: password
+      PORT: 8082
+    depends_on:
+      - "postgres"
+
+  delete_service:
+    image: delusionaloptimist/pastebean-delete:latest
+    networks:
+      - pastebean-net
+    environment:
+      POSTGRES_PASSWORD: password
+      PORT: 8083
     depends_on:
       - "postgres"
 

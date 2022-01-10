@@ -14,5 +14,5 @@ func main() {
 	}
 	router := router.NewRouter(db)
 
-	router.Run(":8081")
+	router.Run()
 }

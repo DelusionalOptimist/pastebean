@@ -1,0 +1,4 @@
+FROM scratch
+WORKDIR /
+ADD ./delete /delete
+CMD [ "/delete" ]
