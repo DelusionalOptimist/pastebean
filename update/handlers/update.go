@@ -19,5 +19,5 @@ func (h *Handler) UpdatePaste(c *gin.Context) {
 
 	p.ID = id
 	h.HandlerEnv.DB.Model(p).Updates(p)
-	json.NewEncoder(c.Writer).Encode(p)
+	c.String(http.StatusOK, "%s", p.Body)
 }

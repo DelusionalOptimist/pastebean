@@ -10,7 +10,7 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 	r := gin.Default()
 	h := handlers.NewHandler(db)
 
-	r.DELETE("/delete/:id", h.DeletePaste)
+	r.DELETE("/:id", h.DeletePaste)
 
 	return r
 }

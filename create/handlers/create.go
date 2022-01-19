@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"net/http"
 
 	"github.com/DelusionalOptimist/pastebean/pkg/common/models"
 	"github.com/gin-gonic/gin"
@@ -13,5 +14,5 @@ func (h *Handler) CreatePaste(c *gin.Context) {
 	json.NewDecoder(c.Request.Body).Decode(p)
 
 	h.HandlerEnv.DB.Create(p)
-	c.String(200, "%s", p.ID.String())
+	c.Redirect(http.StatusSeeOther, "/" + p.ID.String())
 }

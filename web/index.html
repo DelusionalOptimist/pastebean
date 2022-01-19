@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Rudraksh Pareek"><title>Pastebean - New Paste</title>
+    <meta name="description" content="Pastebean is a pastebin implemented as microservices.">
+    <link rel="icon" type="image/png" href="favicon.ico" sizes="32x32">
+    <style type="text/css" media="screen">
+      html, body, .container, form { padding: 0; height: 100%; }
+      .container { margin: 10px; }
+
+      .error {
+         border: 2px solid red;
+         margin-bottom: 10px;
+      }
+
+      textarea {
+         width: 100%;
+         height: 75%;
+         padding: 10px;
+         box-sizing: border-box;
+         margin-bottom: 10px;
+      }
+
+      input[type="submit"] {
+         margin-top: 10px;
+         padding: 5px;
+      }
+
+      input[type="form"] {
+         margin-top: 10px;
+         padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+		<div class="container">
+			<form method="post" id="paste_form" action="/create">
+				<textarea name="body" rows="30" placeholder="Paste here..." cols="80"></textarea>
+				<br>
+				<input type="form" name="name" placeholder="Name">
+				<br>
+				<input type="submit" value="Paste!">
+			</form>
+    </div>
+		<script>
+
+			function handleSubmit(event) {
+				event.preventDefault();
+				const data = new FormData(event.target);
+				const formJSON = Object.fromEntries(data.entries());
+				JSON.stringify(formJSON);
+				var fetchOptions = {
+				  method: "POST",
+					redirect: "follow",
+				  header: new Headers({
+				      "Content-Type": "application/json",
+				  }),
+				  //cross origin mode is needed as we are not using the same domain
+				  mode: "cors"
+				}
+				fetchOptions.body = JSON.stringify(formJSON);
+				fetch("/create", fetchOptions)
+				.then((response) => {
+					if (response.redirected) {
+						 window.location.href = response.url;
+					}
+				})
+			}
+
+			const form = document.querySelector("#paste_form");
+			form.addEventListener('submit', handleSubmit);
+		</script>
+</body>
+</html>

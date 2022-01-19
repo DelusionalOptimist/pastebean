@@ -29,11 +29,23 @@ static_resources:
                   route:
                     cluster: pastebean_create_service
                 - match:
+                    headers:
+                      - name: ":method"
+                        exact_match: "GET"
                     safe_regex:
                       regex: '/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
                       google_re2: {}
                   route:
                     cluster: pastebean_read_service
+                - match:
+                    headers:
+                      - name: ":method"
+                        exact_match: "DELETE"
+                    safe_regex:
+                      regex: '/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
+                      google_re2: {}
+                  route:
+                    cluster: pastebean_delete_service
                 - match:
                     safe_regex:
                       regex: '/update/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
@@ -41,11 +53,9 @@ static_resources:
                   route:
                     cluster: pastebean_update_service
                 - match:
-                    safe_regex:
-                      regex: '/delete/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
-                      google_re2: {}
+                    prefix: "/"
                   route:
-                    cluster: pastebean_delete_service
+                    cluster: pastebean_web_server
 
   clusters:
   - name: pastebean_create_service
@@ -71,7 +81,7 @@ static_resources:
             address:
               socket_address:
                 address: read_service
-                port_value: 8081
+                port_value: 8080
   - name: pastebean_update_service
     type: STRICT_DNS
     lb_policy: round_robin
@@ -83,7 +93,7 @@ static_resources:
             address:
               socket_address:
                 address: update_service
-                port_value: 8082
+                port_value: 8080
   - name: pastebean_delete_service
     type: STRICT_DNS
     lb_policy: round_robin
@@ -95,7 +105,19 @@ static_resources:
             address:
               socket_address:
                 address: delete_service
-                port_value: 8083
+                port_value: 8080
+  - name: pastebean_web_server
+    type: STRICT_DNS
+    lb_policy: round_robin
+    load_assignment:
+      cluster_name: pastebean_web_server
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: web_server
+                port_value: 80
 
 admin:
   address:

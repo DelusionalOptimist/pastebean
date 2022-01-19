@@ -49,7 +49,7 @@ services:
       - pastebean-net
     environment:
       POSTGRES_PASSWORD: password
-      PORT: 8081
+      PORT: 8080
     depends_on:
       - "postgres"
 
@@ -59,7 +59,7 @@ services:
       - pastebean-net
     environment:
       POSTGRES_PASSWORD: password
-      PORT: 8082
+      PORT: 8080
     depends_on:
       - "postgres"
 
@@ -69,9 +69,17 @@ services:
       - pastebean-net
     environment:
       POSTGRES_PASSWORD: password
-      PORT: 8083
+      PORT: 8080
     depends_on:
       - "postgres"
+
+  web_server:
+    image: busybox
+    networks:
+      - pastebean-net
+    volumes:
+      - ./web:/web
+    command: ["httpd", "-h", "/web"]
 
 networks:
   pastebean-net: {}
