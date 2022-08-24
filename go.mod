@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/gin-gonic/gin v1.7.4
 	github.com/gofrs/uuid v4.1.0+incompatible
-	github.com/lib/pq v1.10.4
+	github.com/lib/pq v1.10.6
 	github.com/spf13/viper v1.9.0
 	gorm.io/driver/postgres v1.2.1
 	gorm.io/gorm v1.22.2
