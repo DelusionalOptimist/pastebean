@@ -23,7 +23,7 @@ services:
       - "postgres"
 
   envoy_proxy:
-    image: envoyproxy/envoy:v1.20-latest
+    image: envoyproxy/envoy:v1.23-latest
     volumes:
     - ./envoy-config.yaml:/etc/envoy.yaml
     networks:
